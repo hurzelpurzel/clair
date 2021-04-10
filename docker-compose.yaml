@@ -1,0 +1,28 @@
+# see https://cheatography.com/gauravpandey44/cheat-sheets/docker-compose/
+version: '3'
+
+volumes:
+  clair-postgres:
+
+services:
+  clair-postgres:
+     image: arminc/clair-db:latest
+     container_name: clair-postgres
+     restart: always
+     ports:
+       - 5432:5432
+     volumes:
+       - clair-postgres:/var/lib/postgresql/data   
+    
+  clair:
+    image: quay.io/coreos/clair:latest
+    depends_on:
+       - clair-postgres
+    container_name: clair
+    restart: always
+    ports:
+      - "6060:6060"
+      - "6061:6061"
+    volumes:
+       - ./config.yaml:/config/config.yaml     
+    command: [-config, /config/config.yaml ]
