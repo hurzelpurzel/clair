@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: clair-postgres
+  name: clair-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: clair-postgres
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: clair-postgres
+    spec:
+      containers:
+        - image: arminc/clair-db:latest
+          name: clair-postgres
+          ports:
+            - containerPort: 5432
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: clair-postgres
+      restartPolicy: Always
+      volumes:
+        - name: clair-postgres
+          persistentVolumeClaim:
+            claimName: clair-postgres
+status: {}

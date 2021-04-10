@@ -1,0 +1,56 @@
+apiVersion: v1
+data:
+  config.yaml: "# Copyright 2015 clair authors\n#\n# Licensed under the Apache License,
+    Version 2.0 (the \"License\");\n# you may not use this file except in compliance
+    with the License.\n# You may obtain a copy of the License at\n#\n#     http://www.apache.org/licenses/LICENSE-2.0\n#\n#
+    Unless required by applicable law or agreed to in writing, software\n# distributed
+    under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES
+    OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the
+    specific language governing permissions and\n# limitations under the License.\n\n#
+    The values specified here are the default values that Clair uses if no configuration
+    file is specified or if the keys are not defined.\nclair:\n  database:\n    #
+    Database driver\n    type: pgsql\n    options:\n      # PostgreSQL Connection
+    string\n      # https://www.postgresql.org/docs/current/static/libpq-connect.html#LIBPQ-CONNSTRING\n
+    \     source: postgresql://postgres:password@clair-postgres:5432?sslmode=disable\n\n
+    \     # Number of elements kept in the cache\n      # Values unlikely to change
+    (e.g. namespaces) are cached in order to save prevent needless roundtrips to the
+    database.\n      cachesize: 16384\n\n      # 32-bit URL-safe base64 key used to
+    encrypt pagination tokens\n      # If one is not provided, it will be generated.\n
+    \     # Multiple clair instances in the same cluster need the same value.\n      paginationkey:\n\n
+    \ api:\n    # v3 grpc/RESTful API server address\n    addr: \"0.0.0.0:6060\"\n\n
+    \   # Health server address\n    # This is an unencrypted endpoint useful for
+    load balancers to check to healthiness of the clair server.\n    healthaddr: \"0.0.0.0:6061\"\n\n
+    \   # Deadline before an API request will respond with a 503\n    timeout: 900s\n\n
+    \   # Optional PKI configuration\n    # If you want to easily generate client
+    certificates and CAs, try the following projects:\n    # https://github.com/coreos/etcd-ca\n
+    \   # https://github.com/cloudflare/cfssl\n    # servername: \n    # Disabled
+    cafile, otherwise we have to provide client TLS certificates with Clair.\n    #
+    cafile: /opt/certs/ca-root.crt\n    # keyfile: \n    # certfile: \n\n  updater:\n
+    \   # Frequency the database will be updated with vulnerabilities from the default
+    data sources\n    # The value 0 disables the updater entirely.\n    interval:
+    1m\n    enabledupdaters:\n      - ubuntu\n      - alpine\n\n  notifier:\n    #
+    Number of attempts before the notification is marked as failed to be sent\n    attempts:
+    3\n\n    # Duration before a failed notification is retried\n    renotifyinterval:
+    2h\n\n    http:\n      # Optional endpoint that will receive notifications via
+    POST requests\n      endpoint:\n\n      # Optional PKI configuration\n      #
+    If you want to easily generate client certificates and CAs, try the following
+    projects:\n      # https://github.com/cloudflare/cfssl\n      # https://github.com/coreos/etcd-ca\n
+    \     servername:\n      cafile:\n      keyfile:\n      certfile:\n\n      # Optional
+    HTTP Proxy: must be a valid URL (including the scheme).\n      proxy:\n"
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2021-04-10T21:56:44Z"
+  managedFields:
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:data:
+        .: {}
+        f:config.yaml: {}
+    manager: kubectl-create
+    operation: Update
+    time: "2021-04-10T21:56:44Z"
+  name: clair-config
+  namespace: default
+  resourceVersion: "167411"
+  uid: 79c81bfb-cb2f-4fdd-8a6e-0a37e46c77ee
